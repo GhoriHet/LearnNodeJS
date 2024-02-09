@@ -76,10 +76,7 @@ let institues = [
     }
 ];
 
-
-let newInstitues;
-let array;
-newInstitues = institues.map((value) => {
+let newInstitues = institues.map((value) => {
     return {
         id: value.id,
         name: value.name,
