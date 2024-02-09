@@ -27,6 +27,7 @@
 
 let institues = [
     {
+        id: 1,
         name: 'ABC IT Institute',
         seat: [
             {
@@ -38,6 +39,7 @@ let institues = [
         ]
     },
     {
+        id: 2,
         name: 'XYZ IT Institute',
         seat: [
             {
@@ -49,6 +51,7 @@ let institues = [
         ]
     },
     {
+        id: 3,
         name: 'PQR IT Institute',
         seat: [
             {
@@ -60,6 +63,7 @@ let institues = [
         ]
     },
     {
+        id: 4,
         name: 'MNP IT Institute',
         seat: [
             {
@@ -76,10 +80,10 @@ let institues = [
 let newInstitues;
 let array;
 newInstitues = institues.map((value) => {
-    value.seat.map((seat) => {
-        array = Object.entries(seat).filter((value) => value[1] > 0);
-    })
-    value.seat = Object.fromEntries(array)
-    return value;
-})
-console.log(newInstitues)
+    return {
+        id: value.id,
+        name: value.name,
+        seat: value.seat.map((value) => Object.fromEntries(Object.entries(value).filter(([key, value]) => value > 0)))
+    }
+}).filter((value) => Object.keys(value.seat[0]).length > 0)
+console.log(newInstitues) 
