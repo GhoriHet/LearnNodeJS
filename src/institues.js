@@ -99,6 +99,7 @@ app.put("/:id/:tech", (request,response) => {
     const tech = request.params.tech;
 
     const inst = newInstitues.find((d) => d.id == instId);
+    console.log(inst);
 
     if (!inst) {
         return response.status(404).json({
@@ -111,12 +112,29 @@ app.put("/:id/:tech", (request,response) => {
     const techAva = inst.seat.findIndex((t) => t.hasOwnProperty(tech))
     console.log(techAva);
 
-    if (!techAva) {
+    // if (!techAva) {
+    //     return response.status(404).json({
+    //         success: false,
+    //         message: "Technology not found"
+    //     });
+    // } 
+
+    if (techAva) {
         return response.status(404).json({
             success: false,
             message: "Technology not found"
         });
-    }
+    } 
+
+
+    let seatAdd = request.body;
+
+    inst.seat[0][tech] = seatAdd.seat;
+    response.status(200).json({
+        success: true,
+        data: newInstitues,
+        message: "Data updated successfully!!"
+    })
 
     console.log("Technology available");
 })
