@@ -1,0 +1,9 @@
+const express = require('express');
+
+const router = express.Router();
+
+router.get("/", () => {
+    console.log("GET subcategory API..");
+});
+
+module.exports = router;
