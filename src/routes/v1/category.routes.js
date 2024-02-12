@@ -25,6 +25,19 @@ router.post("/", (req, res) => {
     let errorData = schema.validate({ name: bodyData["name"], city: bodyData["city"] })
     console.log(errorData);
 
+    if (!errorData.error) {
+        return res.status(200).json({
+            success: true,
+            data: bodyData,
+            message: "Data post successfully!!"
+        })
+    }
+
+    res.status(404).json({
+        success: false,
+        message: errorData
+    })
+
 })
 
 module.exports = router;
