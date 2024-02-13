@@ -1,43 +1,31 @@
 const express = require("express");
+const validate = require("../../middleware/validate");
+const { categoryValidation } = require("../../validation");
 
 const router = express.Router();
-
-const Joi = require('joi');
-
-const schema = Joi.object({
-    name: Joi.string()
-        .alphanum()
-        .required(),
-
-    city: Joi.string()
-        .alphanum()
-        .required(),
-})
 
 router.get("/", () => {
     console.log("GET category API..");
 })
 
-router.post("/", (req, res) => {
-    const bodyData = req.body
-    console.log("POST category API..");
-
-    let errorData = schema.validate({ name: bodyData["name"], city: bodyData["city"] })
-    console.log(errorData);
-
-    if (!errorData.error) {
-        return res.status(200).json({
+router.post(
+    "/",
+    validate(categoryValidation.createCategory),
+    (req, res, next) => {
+        console.log(req.body);
+        res.status(200).json({
             success: true,
-            data: bodyData,
+            data: req.body,
             message: "Data post successfully!!"
         })
-    }
-
-    res.status(404).json({
-        success: false,
-        message: errorData
     })
 
-})
+router.put(
+    "/:id",
+    validate(categoryValidation.createCategory),
+    (req, res, next) => {
+        let ID = req.params.id;
+        console.log(ID);
+    })
 
 module.exports = router;
