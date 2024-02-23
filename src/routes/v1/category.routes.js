@@ -6,7 +6,7 @@ const { categoryController } = require("../../controller");
 const router = express.Router();
 
 router.get(
-    "/get-category", 
+    "/get-category",
     categoryController.getCategory
 )
 
@@ -17,11 +17,14 @@ router.post(
 )
 
 router.put(
-    "/:id",
-    validate(categoryValidation.createCategory),
-    (req, res, next) => {
-        let ID = req.params.id;
-        console.log(ID);
-    })
+    "/update-category/:id",
+    validate(categoryValidation.updateCategory),
+    categoryController.updateCategory
+)
+
+router.delete(
+    "delete-category/:id",
+    categoryController.deleteCategory
+)
 
 module.exports = router;

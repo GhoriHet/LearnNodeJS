@@ -8,6 +8,18 @@ const createCategory = {
     }
 };
 
+const updateCategory = {
+    params: {
+        id: Joi.string().required().trim()
+    },
+    body: {
+        name: Joi.string().trim(),
+        description: Joi.string().trim(),
+        image: Joi.string().trim(),
+    }
+}
+
 module.exports = {
-    createCategory
+    createCategory,
+    updateCategory
 };
