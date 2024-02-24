@@ -10,6 +10,11 @@ router.get(
     categoryController.getCategory
 )
 
+router.get(
+    "/get-category/:id",
+    categoryController.getCategoryById
+)
+
 router.post(
     "/create-category",
     validate(categoryValidation.createCategory),
@@ -25,6 +30,16 @@ router.put(
 router.delete(
     "delete-category/:id",
     categoryController.deleteCategory
+)
+
+router.get(
+    "/get-active",
+    categoryController.getCategoryActive
+)
+
+router.get(
+    "/get-inactive",
+    categoryController.getCategoryInactive
 )
 
 module.exports = router;
