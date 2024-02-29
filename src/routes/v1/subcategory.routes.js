@@ -43,4 +43,14 @@ router.get(
     subcategoryController.countInActive
 )
 
+router.get(
+    '/get-countProduct',
+    subcategoryController.countProduct
+)
+
+router.get(
+    '/get-mostProduct',
+    subcategoryController.mostProduct
+)
+
 module.exports = router;

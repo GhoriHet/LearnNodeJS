@@ -150,6 +150,55 @@ const countInActive = async (req, res) => {
     }
 }
 
+const mostProduct = async (req, res) => {
+
+}
+
+const countProduct = async (req, res) => {
+    try {
+        const subcategory = await Subcategories.aggregate(
+            [
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: '_id',
+                        foreignField: 'subcategory_id',
+                        as: 'result'
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$result'
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        subcategory_name: { $first: '$subcategory_name' },
+                        subcategory_desc: { $first: '$subcategory_desc' },
+                        'TotalCounting': {
+                            $sum: 1
+                        }
+                    }
+                }
+            ]
+        )
+
+        if (!subcategory) {
+            return res.status(500).json({ message: 'Internal Server Error!' })
+        }
+
+        res.status(200).json({
+            success: true,
+            data: subcategory
+        })
+
+    } catch (error) {
+        console.log(error.message)
+    }
+
+}
+
 
 module.exports = {
     createSubcategory,
@@ -158,5 +207,7 @@ module.exports = {
     updateSubcategory,
     deleteSubCategory,
     countActive,
-    countInActive
+    countInActive,
+    countProduct,
+    mostProduct
 }
