@@ -105,7 +105,7 @@ const getCategoryInactive = async (req, res) => {
             data: category,
             message: "Category Data Get Successfully!!"
         });
-        
+
     } catch (error) {
         console.log(error.message)
     }
@@ -154,6 +154,129 @@ const updateCategory = async (req, res) => {
     }
 }
 
+const mostProduct = async (req, res) => {
+    try {
+        let category = await Categories.aggregate(
+            [
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: '_id',
+                        foreignField: 'category_id',
+                        as: 'product'
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$product'
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        category_name: { $first: '$category_name' },
+                        'totalProduct': {
+                            $sum: 1
+                        }
+                    }
+                },
+                {
+                    $sort: {
+                        totalProduct: -1
+                    }
+                },
+                {
+                    $limit: 5
+                }
+            ]
+        );
+        if (!category) {
+            return res.status(500).json({ message: "Internal Server Error!" })
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: category,
+            message: "Category Data Get Successfully!!"
+        })
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const averageProduct = async (req, res) => {
+    try {
+        let category = await Categories.aggregate(
+            [
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: '_id',
+                        foreignField: 'category_id',
+                        as: 'result'
+                    }
+                },
+
+                {
+                    $project: {
+                        _id: 1,
+                        category_name: 1,
+                        category_desc: 1,
+                        avgProduct: {
+                        }
+                    }
+                }
+            ]
+        )
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const countSubcategory = async (req, res) => {
+    try {
+        let category = await Categories.aggregate(
+            [
+                {
+                    $lookup: {
+                        from: 'subcategories',
+                        localField: '_id',
+                        foreignField: 'category_id',
+                        as: 'result'
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$result',
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        category_name: { $first: '$category_name' },
+                        category_desc: { $first: '$category_desc' },
+                        'TotalCounting': {
+                            $sum: 1
+                        }
+                    }
+                }
+            ]
+        );
+        if (!category) {
+            return res.status(500).json({ message: "Internal Server Error!" })
+        }
+
+        return res.status(400).json({
+            success: true,
+            data: category
+        })
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 module.exports = {
     createCategory,
     getCategory,
@@ -161,5 +284,8 @@ module.exports = {
     getCategoryActive,
     getCategoryInactive,
     deleteCategory,
-    updateCategory
+    updateCategory,
+    mostProduct,
+    averageProduct,
+    countSubcategory
 }

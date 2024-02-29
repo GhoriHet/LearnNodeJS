@@ -42,4 +42,19 @@ router.get(
     categoryController.getCategoryInactive
 )
 
+router.get(
+    '/get-mostProduct',
+    categoryController.mostProduct
+)
+
+router.get(
+    '/get-avgProduct',
+    categoryController.averageProduct
+)
+
+router.get(
+    '/get-countSubcategory',
+    categoryController.countSubcategory
+)
+
 module.exports = router;
