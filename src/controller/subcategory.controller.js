@@ -21,8 +21,7 @@ const createSubcategory = async (req, res) => {
 
 const getSubcategory = async (req, res) => {
     try {
-        let subcategory = await Subcategories.find()
-        console.log(subcategory);
+        let subcategory = await Subcategories.find();
 
         if (!subcategory) {
             res.status(500).json({ message: "Internal Server Error!" })
@@ -40,8 +39,7 @@ const getSubcategory = async (req, res) => {
 
 const getSubcategoryById = async (req, res) => {
     try {
-        let subcategory = await Subcategories.findById(req.params.id)
-        console.log(subcategory);
+        let subcategory = await Subcategories.findById(req.params.id);
 
         if (!subcategory) {
             res.status(500).json({ message: "Internal Server Error!" })
@@ -151,10 +149,6 @@ const countInActive = async (req, res) => {
 }
 
 const mostProduct = async (req, res) => {
-
-}
-
-const countProduct = async (req, res) => {
     try {
         const subcategory = await Subcategories.aggregate(
             [
@@ -196,6 +190,10 @@ const countProduct = async (req, res) => {
     } catch (error) {
         console.log(error.message)
     }
+}   
+
+const countProduct = async (req, res) => {
+    
 
 }
 
