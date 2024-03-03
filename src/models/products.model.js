@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
 
 const productsSchema = new mongoose.Schema({
+    _id: {
+        type: Number
+    },
     subcategory_id: {
-        type: mongoose.Types.ObjectId,
+        // type: mongoose.Types.ObjectId,
+        type: Number,
         ref: 'Subcategories',
         required: true
     },
@@ -18,10 +22,10 @@ const productsSchema = new mongoose.Schema({
     discount: {
         type: Number,
     },
-    image: {
-        type: String,
-        required: true
-    },
+    // image: {
+    //     type: String,
+    //     required: true
+    // },
     isActive: {
         type: Boolean,
         default: true
