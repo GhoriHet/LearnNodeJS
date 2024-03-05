@@ -29,6 +29,7 @@ router.put(
 
 router.delete(
     "delete-category/:id",
+    validate(categoryValidation.deleteCategory),
     categoryController.deleteCategory
 )
 

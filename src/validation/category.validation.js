@@ -17,7 +17,14 @@ const updateCategory = {
     }
 }
 
+const deleteCategory = {
+    params: {
+        categoryId: Joi.string().required().trim()
+    }
+};
+
 module.exports = {
     createCategory,
-    updateCategory
+    updateCategory,
+    deleteCategory
 };
