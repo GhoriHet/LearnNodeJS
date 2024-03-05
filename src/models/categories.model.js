@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 
 const categoriesSchema = new mongoose.Schema(
     {
+        _id: {
+            type: Number
+        },
         name: {
             type: String,
             required: true,

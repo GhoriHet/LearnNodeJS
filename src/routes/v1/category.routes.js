@@ -6,7 +6,7 @@ const { categoryController } = require("../../controller");
 const router = express.Router();
 
 router.get(
-    "/get-category",
+    "/list-category",
     categoryController.getCategory
 )
 
