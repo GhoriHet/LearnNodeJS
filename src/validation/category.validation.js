@@ -10,9 +10,6 @@ const createCategory = {
 };
 
 const updateCategory = {
-    params: {
-        id: Joi.number().required()
-    },
     body: {
         name: Joi.string().trim(),
         description: Joi.string().trim(),

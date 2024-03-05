@@ -76,3 +76,70 @@ paths:
         '201':
           description: Created
 
+  /category/update-category/{categoryId}:
+    put:
+      tags:
+        - category
+      summary: Updates category
+      description: Optional extended description in CommonMark or HTML.
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          description: The ID of the category to update.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                image:
+                  type: string
+              required:
+                - name
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /category/delete-category/{categoryId}:
+    delete:
+      tags:
+        - category
+      summary: Deletes a category
+      description: Optional extended description in CommonMark or HTML.
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          description: The ID of the category to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
