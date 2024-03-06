@@ -1,30 +1,26 @@
-
-const joi = require('joi')
+const Joi = require("joi");
 
 const createVariant = {
     body: {
-        color: joi.string().required(),
-        size: joi.string().required(),
-        price: joi.number().required(),
-        stock: joi.number().required(),
+        _id: Joi.number().required(),
+        product_id: Joi.number().required(),
+        attributes: Joi.object().required(),
+        isActive: Joi.boolean()
     }
-}
+};
 
-const getVariant = {
-    body: joi.object().keys()
+const updateVariant = {
+    params: Joi.object().keys()
 }
 
 const deleteVariant = {
-    params: joi.object().keys()
-}
-
-const updateVariant = {
-    params: joi.object().keys()
-}
+    params: {
+        id: Joi.number().required()
+    }
+};
 
 module.exports = {
     createVariant,
-    getVariant,
-    deleteVariant,
-    updateVariant
-}
+    updateVariant,
+    deleteVariant
+};

@@ -1,5 +1,26 @@
 const mongoose = require('mongoose');
 
+const attributesSchema = new mongoose.Schema(
+    {
+        Color: {
+            type: String,
+            required: true
+        },
+        Size: {
+            type: String,
+            required: true
+        },
+        Price: {
+            type: Number,
+            required: true
+        },
+        Quantity: {
+            type: Number,
+            required: true
+        }
+    }
+)
+
 const variantsSchema = new mongoose.Schema(
     {
         _id: {
@@ -11,33 +32,19 @@ const variantsSchema = new mongoose.Schema(
             ref: 'Products',
             required: true
         },
-        color: {
-            type: String,
-            required: true
-        },
-        size: {
-            type: String,
-            required: true
-        },
-        price: {
-            type: Number,
-            required: true
-        },
-        images: {
-            type: [String],
-            default: []
-        },
-        stock: {
-            type: Number,
-            required: true
+        attributes: [attributesSchema],
+        isActive: {
+            type: Boolean,
+            required: true,
+            default: true,
         }
     },
-
     {
         timestamps: true,
         versionKey: false
     }
-);
+)
 
 const Variants = mongoose.model("Variants", variantsSchema);
+
 module.exports = Variants;

@@ -37,4 +37,9 @@ router.get(
     variantController.variantHighPrice
 )
 
+router.get(
+    '/get-variantOfProduct/:id',
+    variantController.productData
+);
+
 module.exports = router
