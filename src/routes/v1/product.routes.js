@@ -39,8 +39,48 @@ router.get(
 )
 
 router.get(
-    '/productCategoryId/:id',
-    productController.productByCategoryId
+    '/search-productName/:name',
+    productController.searchProductName
+)
+
+router.get(
+    '/list/category/:id',
+    productController.listByCategory
+)
+
+router.get(
+    '/list/subcategory/:id',
+    productController.listBySubcategory
+)
+
+router.get(
+    '/variant-detail/:id',
+    productController.variantDetails
+)
+
+router.get(
+    '/top-rated',
+    productController.topReviews
+)
+
+router.get(
+    '/new-arrivals',
+    productController.newArrivals
+)
+
+router.get(
+    '/discount',
+    productController.discount
+)
+
+router.get(
+    '/outOfStock',
+    productController.outOfStock
+)
+
+router.get(
+    '/count-category',
+    productController.countCategories
 )
 
 module.exports = router
