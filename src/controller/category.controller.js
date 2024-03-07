@@ -207,28 +207,7 @@ const mostProduct = async (req, res) => {
 
 const averageProduct = async (req, res) => {
     try {
-        let category = await Categories.aggregate(
-            [
-                {
-                    $lookup: {
-                        from: 'products',
-                        localField: '_id',
-                        foreignField: 'category_id',
-                        as: 'result'
-                    }
-                },
-
-                {
-                    $project: {
-                        _id: 1,
-                        category_name: 1,
-                        category_desc: 1,
-                        avgProduct: {
-                        }
-                    }
-                }
-            ]
-        )
+        
     } catch (error) {
         console.log(error.message)
     }
