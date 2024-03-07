@@ -22,20 +22,35 @@ router.post(
     subcategoryController.createSubcategory
 )
 
-router.delete(
-    "/delete-subcategory/:id",
-    subcategoryController.deleteSubCategory
-)
-
 router.put(
     "/update-subcategory/:id",
     validate(subcategoryValidation.updateSubcategory),
     subcategoryController.updateSubcategory
 )
 
+router.delete(
+    "/delete-subcategory/:id",
+    subcategoryController.deleteSubCategory
+)
+
+router.get(
+    '/get-parentOfsubcategory/:id',
+    subcategoryController.parentOfSubcategory
+)
+
 router.get(
     "/subcategory-active",
     subcategoryController.countActive
+)
+
+router.get(
+    '/get-mostProduct',
+    subcategoryController.mostProduct
+)
+
+router.get(
+    '/get-avgProduct',
+    subcategoryController.averageProduct    
 )
 
 router.get(
@@ -46,11 +61,6 @@ router.get(
 router.get(
     '/get-countProduct',
     subcategoryController.countProduct
-)
-
-router.get(
-    '/get-mostProduct',
-    subcategoryController.mostProduct
 )
 
 module.exports = router;

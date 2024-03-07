@@ -56,6 +56,49 @@ const getCategoryById = async (req, res) => {
     }
 }
 
+const updateCategory = async (req, res) => {
+    try {
+        let id = req.params.id;
+        let data = req.body;
+
+        if (!id) {
+            return res.status(500).json({ message: 'Internal Server Error' })
+        }
+
+        let category = await Categories.findByIdAndUpdate(id, data, { new: true });
+
+        if (!category) {
+            return res.status(500).json({ message: 'Internal Server Error' })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Category updated successfully!',
+        });
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const deleteCategory = async (req, res) => {
+    try {
+        let category = await Categories.findByIdAndDelete(req.params.id);
+
+        if (!category) {
+            return res.status(500).json({ message: 'Internal Server Error' })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Category deleted successfully!',
+        })
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 const getCategoryActive = async (req, res) => {
     try {
         let category = await Categories.aggregate([
@@ -81,77 +124,6 @@ const getCategoryActive = async (req, res) => {
         console.log(error.message)
     }
 
-}
-
-const getCategoryInactive = async (req, res) => {
-    try {
-        let category = await Categories.aggregate([
-            {
-                $match: {
-                    "isActive": false
-                },
-            },
-            {
-                $count: "Category Inactive Of"
-            }
-        ]);
-
-        if (!category) {
-            return res.status(500).json({ message: "Internal Server Error!" })
-        }
-
-        return res.status(200).json({
-            success: true,
-            data: category,
-            message: "Category Data Get Successfully!!"
-        });
-
-    } catch (error) {
-        console.log(error.message)
-    }
-}
-
-const deleteCategory = async (req, res) => {
-    try {
-        let category = await Categories.findByIdAndDelete(req.params.id);
-
-        if (!category) {
-            return res.status(500).json({ message: 'Internal Server Error' })
-        }
-
-        return res.status(200).json({
-            success: true,
-            message: 'Category deleted successfully!',
-        })
-
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-
-const updateCategory = async (req, res) => {
-    try {
-        let id = req.params.id;
-        let data = req.body;
-
-        if (!id) {
-            return res.status(500).json({ message: 'Internal Server Error' })
-        }
-
-        let category = await Categories.findByIdAndUpdate(id, data, { new: true });
-
-        if (!category) {
-            return res.status(500).json({ message: 'Internal Server Error' })
-        }
-
-        return res.status(200).json({
-            success: true,
-            message: 'Category updated successfully!',
-        });
-
-    } catch (error) {
-        console.log(error.message);
-    }
 }
 
 const mostProduct = async (req, res) => {
@@ -275,10 +247,38 @@ const averageProduct = async (req, res) => {
         });
 
     } catch (error) {
-         return res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: error.message
         });
+    }
+}
+
+const getCategoryInactive = async (req, res) => {
+    try {
+        let category = await Categories.aggregate([
+            {
+                $match: {
+                    "isActive": false
+                },
+            },
+            {
+                $count: "Category Inactive Of"
+            }
+        ]);
+
+        if (!category) {
+            return res.status(500).json({ message: "Internal Server Error!" })
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: category,
+            message: "Category Data Get Successfully!!"
+        });
+
+    } catch (error) {
+        console.log(error.message)
     }
 }
 
@@ -329,11 +329,11 @@ module.exports = {
     createCategory,
     getCategory,
     getCategoryById,
-    getCategoryActive,
-    getCategoryInactive,
-    deleteCategory,
     updateCategory,
+    deleteCategory,
+    getCategoryActive,
     mostProduct,
     averageProduct,
+    getCategoryInactive,
     countSubcategory
 }
