@@ -34,7 +34,7 @@ router.delete(
 )
 
 router.get(
-    '/search-product/:name',
+    '/search-product',
     productController.productSearch
 )
 
