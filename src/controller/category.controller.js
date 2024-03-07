@@ -207,9 +207,78 @@ const mostProduct = async (req, res) => {
 
 const averageProduct = async (req, res) => {
     try {
-        
+        const products = await Categories.aggregate(
+            [
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: '_id',
+                        foreignField: 'category_id',
+                        as: 'products'
+                    }
+                },
+                {
+                    $addFields: {
+                        'countOfProducts': { $size: '$products' }
+                    }
+                },
+                {
+                    $match: {
+                        'countOfProducts': { $gt: 0 }
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        'totalProducts': {
+                            $sum: '$countOfProducts'
+                        },
+                        data: { $push: '$$ROOT' }
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$data'
+                    }
+                },
+                {
+                    $addFields: {
+                        'Percentage':
+                        {
+                            $multiply: [{
+                                $divide: ['$data.countOfProducts', '$totalProducts']
+                            }, 100]
+                        }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        category_id: '$data._id',
+                        category_name: '$data.category_name',
+                        products: '$data.products',
+                        isActive: '$data.isActive',
+                        totalProducts: 1,
+                        Percentage: 1
+                    }
+                }
+            ]
+        )
+
+        if (!products) {
+            return res.status(500).json({ message: "Internal Server Error!" })
+        }
+        return res.status(200).json({
+            success: true,
+            data: products,
+            message: "Get average product category successfully."
+        });
+
     } catch (error) {
-        console.log(error.message)
+         return res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
 }
 
