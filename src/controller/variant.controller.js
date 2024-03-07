@@ -38,7 +38,6 @@ const getVariantById = async (req, res) => {
 }
 
 const updateVariant = async (req, res) => {
-    console.log(req.params.id)
     try {
         let variant = await Variants.findByIdAndUpdate(req.params.id, req.body, { new: true });
         console.log(variant)
@@ -134,9 +133,7 @@ const productData = async (req, res) => {
     try {
         let id = req.params.id;
         let convertId = +id;
-        // $match: {
-        //     products: convertId
-        // }
+        
         const variant = await Variants.aggregate([
             {
                 $lookup: {
