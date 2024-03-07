@@ -30,16 +30,46 @@ router.post(
     '/create-variant',
     validate(variantValidation.createVariant),
     variantController.createVariant
-)
+);
 
 router.get(
-    '/prouct-price',
-    variantController.variantHighPrice
-)
-
-router.get(
-    '/get-variantOfProduct/:id',
+    '/get-product/:id',
     variantController.productData
 );
+
+router.get(
+    '/list-variantProduct/:id',
+    variantController.listVariantProductId
+);
+
+router.get(
+    '/count-stock/:id',
+    variantController.countStock
+)
+
+router.get(
+    '/low-quantity',
+    variantController.lowQuantity
+)
+
+router.get(
+    '/highPrice',
+    variantController.highPrice
+)
+
+router.get(
+    '/variant-active',
+    variantController.getActive
+)
+
+router.get(
+    '/count-product',
+    variantController.countProducts
+)
+
+router.get(
+    '/multiple-product',
+    variantController.multipleProduct
+)
 
 module.exports = router
