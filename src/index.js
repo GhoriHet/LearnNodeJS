@@ -7,7 +7,6 @@ const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./apidocs.yaml');
 
-
 connectDB()
 
 app.use(express.json()); // for parsing application/json  
