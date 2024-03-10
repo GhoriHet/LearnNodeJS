@@ -316,34 +316,34 @@ const highPrice = async (req, res) => {
         const variants = await Variants.aggregate(
             [
                 {
-                  $sort: {
-                    'attributes.Price': -1
-                  }
+                    $sort: {
+                        'attributes.Price': -1
+                    }
                 },
                 {
-                  $limit: 1
+                    $limit: 1
                 },
                 {
-                  $lookup: {
-                    from: 'products',
-                    localField: 'product_id',
-                    foreignField: '_id',
-                    as: 'products'
-                  }
+                    $lookup: {
+                        from: 'products',
+                        localField: 'product_id',
+                        foreignField: '_id',
+                        as: 'products'
+                    }
                 },
                 {
-                  $unwind: {
-                    path: '$products'
-                  }
+                    $unwind: {
+                        path: '$products'
+                    }
                 },
                 {
-                  $project: {
-                    _id: 0,
-                    name: '$products.name',
-                    Price: '$attributes.Price'
-                  }
+                    $project: {
+                        _id: 0,
+                        name: '$products.name',
+                        Price: '$attributes.Price'
+                    }
                 }
-              ]
+            ]
         );
 
         if (!variants) {
@@ -391,37 +391,37 @@ const countProducts = async (req, res) => {
         const variants = await Variants.aggregate(
             [
                 {
-                  $lookup: {
-                    from: 'products',
-                    localField: 'product_id',
-                    foreignField: '_id',
-                    as: 'products'
-                  }
+                    $lookup: {
+                        from: 'products',
+                        localField: 'product_id',
+                        foreignField: '_id',
+                        as: 'products'
+                    }
                 },
                 {
-                  $unwind: {
-                    path: '$products'
-                  }
+                    $unwind: {
+                        path: '$products'
+                    }
                 },
                 {
-                      $group: {
+                    $group: {
                         _id: '$products._id',
                         product_name: {
-                          $first: '$products.name'
+                            $first: '$products.name'
                         },
-                      total_variants: {
-                        $sum: 1
-                      }
-                      }
+                        total_variants: {
+                            $sum: 1
+                        }
+                    }
                 },
                 {
-                  $project: {
-                    _id: 0
-                  }
+                    $project: {
+                        _id: 0
+                    }
                 }
-              ]
+            ]
         );
-        
+
         if (!variants) {
             return res.status(500).json({ message: "Internal Server Error!" })
         };
@@ -439,6 +439,57 @@ const countProducts = async (req, res) => {
 
 const multipleProduct = async (req, res) => {
     try {
+        const variant = await Variants.aggregate(
+            [
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'product_id',
+                        foreignField: '_id',
+                        as: 'products'
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$products'
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$product_id',
+                        product_name: {
+                            $first: '$products.name'
+                        },
+                        total_attributes: {
+                            $sum: 1
+                        },
+                        attributes: {
+                            $push: '$attributes'
+                        }
+                    }
+                },
+                {
+                    $match: {
+                        total_attributes: { $gt: 1 }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0
+                    }
+                }
+            ]
+        );
+
+        if (!variant) {
+            return res.status(500).json({message: 'Internal server error'});
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: variant,
+            message: 'Multiple Product Data Get Successfully!!'
+        })
 
     } catch (error) {
         console.log(error.message)
