@@ -7,11 +7,27 @@ Subquery
 => SELECT CNUM, CNAME FROM customer WHERE CNUM IN (SELECT DISTINCT(CNUM) FROM orders WHERE AMT >= (SELECT AVG(AMT) FROM orders))
 
 3. All orders that are greater than the average for Oct. 4
-=> SELECT * FROM orders WHERE AMT > (SELECT AVG(AMT) FROM orders WHERE ODATE='10-MAY-94');
-=> SELECT ODATE, AMT FROM orders WHERE AMT > (SELECT AVG(AMT) FROM orders WHERE ODATE='10-MAY-94'); // only date and average 
+=> SELECT ONUM, AMT FROM orders WHERE amt > ( SELECT AVG(amt) FROM orders WHERE ODATE = '10-APR-94' )
 
 4. Find all customers whose cnum is 1000 above the snum of serres.
-=> SELECT * FROM customer WHERE cnum IN ( SELECT snum + 1005 FROM customer );
+=> SELECT cnum, cname FROM customer WHERE cnum IN ( SELECT (snum + 1005) FROM salespeople )
 
 5. Count the customers with rating above San Jose’s average.
-=> SELECT COUNT(*) AS num_customers_above_avg FROM customer WHERE rating > ( SELECT AVG(rating) FROM customer WHERE city = 'Rome' );
+=> SELECT COUNT(CNUM) AS 'Total Customer' FROM customer WHERE RATING > ( 
+    SELECT AVG(RATING) FROM customer WHERE CITY = 'San Jose'
+)
+
+6. Find name and number of salespeople who have more than or a customer.
+=> SELECT SNUM, SNAME FROM salespeople WHERE SNUM = (SELECT SNUM FROM customer GROUP BY SNUM HAVING COUNT(CNUM) > 1)
+
+7. Find total amount in orders for each salesperson for whom this total is greater than the amount of the largest order in the order table.
+=> SELECT SNUM, SUM(AMT) FROM orders GROUP BY SNUM HAVING SUM(AMT) > (SELECT MAX(AMT) FROM orders)
+
+8. All orders credited to the same salesperson who services Hoffman.
+=> SELECT * FROM orders WHERE SNUM = (SELECT SNUM FROM customer WHERE CNAME = 'Hoffman')
+
+9. Find the sums of the amounts from order table grouped by date, eliminating all those dates where the sum was not at least 2000 above the maximum amount.
+=> SELECT SUM(AMT), ODATE FROM orders GROUP BY ODATE HAVING SUM(AMT) > (SELECT MAX(AMT)+1000 FROM orders)
+
+10. Find salespeople number, name, and city who have multiple customers.
+=> SELECT SNUM, SNAME, CITY FROM salespeople WHERE SNUM = (SELECT  SNUM FROM customer GROUP BY SNUM HAVING COUNT(CNUM) > 1)
