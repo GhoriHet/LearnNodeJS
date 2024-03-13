@@ -5,9 +5,11 @@ const app = express();
 
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
+const pool = require('./db/mysql.db'); // MySQL databse connected!
+
 const swaggerDocument = YAML.load('./apidocs.yaml');
 
-connectDB()
+connectDB();
 
 app.use(express.json()); // for parsing application/json  
  
