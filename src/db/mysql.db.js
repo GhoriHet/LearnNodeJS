@@ -18,7 +18,8 @@ pool.query(`select * from orders`, (error, result, fields) => {
     if (error) {
         return console.log(error);
     }
-    return console.log(result, "MYSQL database connected!")
+    console.log(result)
+    return console.log("MYSQL database connected!");
 })
 
 module.exports = pool;
