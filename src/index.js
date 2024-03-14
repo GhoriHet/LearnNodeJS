@@ -1,6 +1,7 @@
 const express = require('express');
 const router = require('./routes/v1');
 const connectDB = require('./db');
+var cors = require('cors')
 const app = express();
 
 const swaggerUi = require('swagger-ui-express');
@@ -10,6 +11,8 @@ const pool = require('./db/mysql.db'); // MySQL databse connected!
 const swaggerDocument = YAML.load('./apidocs.yaml');
 
 connectDB();
+
+app.use(cors());
 
 app.use(express.json()); // for parsing application/json  
  
