@@ -94,8 +94,23 @@ const { productController } = require('../../controller')
 const router = express.Router()
 
 router.post(
-    '/create-product',
+    '/create-salespeople',
     productController.createProduct
+)
+
+router.get(
+    '/get-salespeople',
+    productController.getSalespeople
+)
+
+router.delete(
+    '/delete-salespeople/:id',
+    productController.deleteSalespeople
+)
+
+router.put(
+    '/update-salespeople/:id',
+    productController.updateSalespeople
 )
 
 module.exports = router

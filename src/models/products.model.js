@@ -51,6 +51,45 @@ const insertProduct = async (data) => {
     }
 }
 
+const SelectSalespeople = async (data) => {
+    try {
+        let sqlQuery = 'SELECT * FROM salespeople';
+        let res = await poolPromise.execute(sqlQuery);
+
+        console.log(res)
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const deleteSalesPeople = async (id) => {
+    try {
+        let sqlQuery = `DELETE FROM salespeople WHERE snum=${id}`;
+        let res = await poolPromise.execute(sqlQuery);
+
+        console.log(res)
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const updateSalesPeople = async (data, id) => {
+    try {
+        // let sqlQuery = `UPDATE salespeople SET snum='?', sname='?', city='?', comm='?' WHERE snum=${id}`;
+        // let res = poolPromise.execute(sqlQuery, [data.snum, data.sname, data.city, data.comm]);
+
+        let sqlQuery = `UPDATE salespeople SET snum=?, sname=?', city='?', comm='?' WHERE snum=${id}`;
+        console.log(sqlQuery)
+
+        // console.log(res)
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 module.exports = {
-    insertProduct
+    insertProduct,
+    SelectSalespeople,
+    deleteSalesPeople,
+    updateSalesPeople
 }

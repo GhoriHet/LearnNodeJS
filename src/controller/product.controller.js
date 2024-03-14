@@ -505,6 +505,37 @@ const createProduct = async (req, res) => {
     }
 }
 
+const getSalespeople = async (req, res) => {
+    try {
+        const res = Products.SelectSalespeople();
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const deleteSalespeople = async (req, res) => {
+    try {
+        let deleteData = +req.params.id
+        let res = Products.deleteSalesPeople(deleteData);
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const updateSalespeople = async (req, res) => {
+    try {
+        let updateId = req.params.id
+        let updateData = req.body
+        let res = Products.updateSalesPeople(updateData, updateId);
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 module.exports = {
-    createProduct
+    createProduct,
+    getSalespeople,
+    deleteSalespeople,
+    updateSalespeople
 }
