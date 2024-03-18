@@ -81,23 +81,21 @@ const updateCategory = async (req, res) => {
     }
 }
 
-const deleteCategory = async (req, res) => {
-    try {
-        let category = await Categories.findByIdAndDelete(req.params.id);
+// const deleteCategoryData = async (req, res) => {
+//     console.log(req.params.id)
+//     // try {
+//     //     const category = await Categories.findByIdAndDelete(req.params.id);
 
-        if (!category) {
-            return res.status(500).json({ message: 'Internal Server Error' })
-        }
+//     //     if (!category) {
+//     //         return res.status(404).json({ success: false, message: 'Category not found' });
+//     //     }
 
-        return res.status(200).json({
-            success: true,
-            message: 'Category deleted successfully!',
-        })
-
-    } catch (error) {
-        console.log(error.message);
-    }
-}
+//     //     return res.status(200).json({ success: true, message: 'Category deleted successfully' });
+//     // } catch (error) {
+//     //     console.error(error.message);
+//     //     return res.status(500).json({ success: false, message: 'Internal Server Error' });
+//     // }
+// };
 
 const getCategoryActive = async (req, res) => {
     try {
@@ -325,15 +323,33 @@ const countSubcategory = async (req, res) => {
     }
 }
 
+const deleteCategory = async (req, res) => {
+    try {
+        const categoryId = req.params.id;
+        const deletedCategory = await Categories.findByIdAndDelete(categoryId);
+
+        if (!deletedCategory) {
+            return res.status(404).json({ success: false, message: 'Category not found' });
+        }
+
+        return res.status(200).json({ success: true, message: 'Category deleted successfully' });
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+}
+
+
 module.exports = {
     createCategory,
     getCategory,
     getCategoryById,
     updateCategory,
-    deleteCategory,
+    // deleteCategoryData,
     getCategoryActive,
     mostProduct,
     averageProduct,
     getCategoryInactive,
-    countSubcategory
+    countSubcategory,
+    deleteCategory
 }

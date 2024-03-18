@@ -499,37 +499,81 @@ const { Products } = require("../models")
 
 const createProduct = async (req, res) => {
     try {
-        const res = await Products.insertProduct(req.body);
+        const result = await Products.insertProduct(req.body);
+
+        res.status(200).json({
+            success: true,
+            message: 'Data Insert Successfully.',
+            data: result
+        })
+
     } catch (error) {
-        console.log(error.message)
+        res.status(500).json({
+            success: false,
+            message: "Internal server error: Insert Salespeople",
+            data: []
+        })
     }
 }
 
 const getSalespeople = async (req, res) => {
     try {
-        const res = Products.SelectSalespeople();
+        const result = await Products.SelectSalespeople();
+
+        res.status(200).json({
+            success: true,
+            message: 'Data Get Successfully.',
+            data: result
+        })
+
     } catch (error) {
-        console.log(error.message)
+        res.status(500).json({
+            success: false,
+            message: "Internal server error: Get Salespeople",
+            data: []
+        })
     }
 }
 
 const deleteSalespeople = async (req, res) => {
     try {
         let deleteData = +req.params.id
-        let res = Products.deleteSalesPeople(deleteData);
+        let result = await Products.deleteSalesPeople(deleteData);
+
+        res.status(200).json({
+            success: true,
+            message: 'Data Delete Successfully.',
+            data: result
+        })
+
     } catch (error) {
-        console.log(error.message)
+        res.status(500).json({
+            success: false,
+            message: "Internal server error: Delete Salespeople",
+            data: []
+        })
     }
 }
 
 const updateSalespeople = async (req, res) => {
     try {
-        let updateId = req.params.id
+        let updateId = +req.params.id
         let updateData = req.body
-        let res = Products.updateSalesPeople(updateData, updateId);
+
+        let result = await Products.updateSalesPeople(updateData, updateId);
+
+        res.status(200).json({
+            success: true,
+            message: 'Data Update Successfully.',
+            data: result
+        })
 
     } catch (error) {
-        console.log(error.message)
+        res.status(500).json({
+            success: false,
+            message: "Internal server error: Updated Salespeople",
+            data: []
+        })
     }
 }
 

@@ -27,11 +27,17 @@ router.put(
     categoryController.updateCategory
 )
 
+// router.delete(
+//     "delete-category/:id",
+//     // validate(categoryValidation.deleteCategory),
+//     categoryController.deleteData
+// )
+
 router.delete(
-    "delete-category/:id",
-    validate(categoryValidation.deleteCategory),
+    "/deleteCategory/:id",
     categoryController.deleteCategory
-)
+);
+
 
 router.get(
     "/get-active",

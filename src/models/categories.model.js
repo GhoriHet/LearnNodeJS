@@ -5,18 +5,14 @@ const categoriesSchema = new mongoose.Schema(
         _id: {
             type: Number
         },
-        name: {
+        category_name: {
             type: String,
             required: true,
             trim: true
         },
-        description: {
+        category_desc: {
             type: String,
             trim: true
-        },
-        image: {
-            type: String,
-            required: true
         },
         isActive: {
             type: Boolean,

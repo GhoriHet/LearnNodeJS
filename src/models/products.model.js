@@ -43,49 +43,46 @@ const poolPromise = require("../db/mysql.db");
 const insertProduct = async (data) => {
     try {
         let sqlQuery = 'INSERT INTO salespeople	(snum, sname, city, comm) VALUES (?, ?, ?, ?)';
-        let res = poolPromise.execute(sqlQuery, [data.snum, data.sname, data.city, data.comm])
+        let [rows] = await poolPromise.execute(sqlQuery, [data.snum, data.sname, data.city, data.comm])
 
-        console.log(res)
+        return rows
     } catch (error) {
-        console.log(error.message)
+        throw error.message
     }
 }
 
 const SelectSalespeople = async (data) => {
     try {
         let sqlQuery = 'SELECT * FROM salespeople';
-        let res = await poolPromise.execute(sqlQuery);
+        let [rows] = await poolPromise.execute(sqlQuery);
 
-        console.log(res)
+        return rows
     } catch (error) {
-        console.log(error.message)
+        throw error.message
     }
 }
 
 const deleteSalesPeople = async (id) => {
     try {
         let sqlQuery = `DELETE FROM salespeople WHERE snum=${id}`;
-        let res = await poolPromise.execute(sqlQuery);
+        let [rows] = await poolPromise.execute(sqlQuery);
 
-        console.log(res)
+        return rows
     } catch (error) {
-        console.log(error.message)
+        throw error.message
     }
 }
 
 const updateSalesPeople = async (data, id) => {
     try {
-        // let sqlQuery = `UPDATE salespeople SET snum='?', sname='?', city='?', comm='?' WHERE snum=${id}`;
-        // let res = poolPromise.execute(sqlQuery, [data.snum, data.sname, data.city, data.comm]);
-
-        let sqlQuery = `UPDATE salespeople SET snum=?, sname=?', city='?', comm='?' WHERE snum=${id}`;
-        console.log(sqlQuery)
-
-        // console.log(res)
+        let sqlQuery = `UPDATE salespeople SET sname = ?, city = ?, comm = ? WHERE snum = ?`;
+        let [rows] = await poolPromise.execute(sqlQuery, [data.sname, data.city, data.comm, id]);
+        
+        return rows;
     } catch (error) {
-        console.log(error.message)
+        throw error.message;
     }
-}
+};
 
 module.exports = {
     insertProduct,
