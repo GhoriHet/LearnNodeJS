@@ -21,14 +21,18 @@ const usersSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    mobile_number: {
+    mobile_no: {
         type: String,
         required: true,
         trim: true
     },
-    type: {
+    role: {
         type: String,
         required: true,
+        trim: true
+    },
+    refresh_token: {
+        type: String,
         trim: true
     },
     isActive: {
