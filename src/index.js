@@ -1,5 +1,6 @@
 const express = require('express');
 const router = require('./routes/v1');
+const cookieParser = require('cookie-parser')
 const connectDB = require('./db');
 var cors = require('cors')
 const app = express();
@@ -13,6 +14,7 @@ const swaggerDocument = YAML.load('./apidocs.yaml');
 connectDB();
 
 app.use(cors());
+app.use(cookieParser())
 
 app.use(express.json()); // for parsing application/json  
  

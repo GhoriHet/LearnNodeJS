@@ -6,7 +6,7 @@ const createAccessRefreshToken = async (user_id) => {
     try {
         const user = await Users.findById(user_id);
 
-        const accessToken = await jwt.sign(
+        const access_token = await jwt.sign(
             {
                 _id: user_id,
                 role: user.role,
@@ -16,7 +16,7 @@ const createAccessRefreshToken = async (user_id) => {
             { expiresIn: process.env.ACCESS_TOKEN_EXPIRE }
         );
 
-        const refreshToken = await jwt.sign(
+        const refresh_token = await jwt.sign(
             {
                 _id: user_id
             },
@@ -24,7 +24,11 @@ const createAccessRefreshToken = async (user_id) => {
             { expiresIn: process.env.REFRESH_TOKEN_EXPIRE }
         )
 
-        return { accessToken, refreshToken }
+        user.refresh_token = refresh_token;
+
+        user.save({ validateBeforeSave: false })
+
+        return { access_token, refresh_token }
 
     } catch (error) {
         console.log(error.message)
@@ -90,7 +94,7 @@ const login = async (req, res) => {
         }
 
         const hashPassword = await bcrypt.compare(password, userExists.password);
-        
+
         if (!hashPassword) {
             return res.status(401).json({
                 success: false,
@@ -99,11 +103,25 @@ const login = async (req, res) => {
             });
         }
 
-        const { accessToken, refreshToken } = await createAccessRefreshToken(userExists._id);
+        const { access_token, refresh_token } = await createAccessRefreshToken(userExists._id);
 
-        console.log("Access Token:", accessToken);
-        console.log("-------------------------------------------")
-        console.log("Refresh Token:", refreshToken);
+        const userData = await Users.findById(userExists._id).select("-password -refresh_token");
+
+        const options = {
+            httpOnly: true,
+            secure: true,
+            maxAge: 60*60*60*24*15
+        }
+
+        res
+            .cookie("access_token", access_token, options)
+            .cookie("refresh_token", refresh_token, options)
+            .status(200)
+            .json({
+                success: true,
+                message: "User Login successfully.",
+                data: { access_token, refresh_token, userData }
+            })
 
     } catch (error) {
         console.log(error.message);

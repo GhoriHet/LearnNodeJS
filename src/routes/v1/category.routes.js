@@ -2,11 +2,13 @@ const express = require("express");
 const validate = require("../../middleware/validate");
 const { categoryValidation } = require("../../validation");
 const { categoryController } = require("../../controller");
+const { auth } = require("../../middleware/auth");
 
 const router = express.Router();
 
 router.get(
     "/list-category",
+    auth(),
     categoryController.getCategory
 )
 
