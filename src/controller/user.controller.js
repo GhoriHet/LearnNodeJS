@@ -110,7 +110,7 @@ const login = async (req, res) => {
         const options = {
             httpOnly: true,
             secure: true,
-            maxAge: 60*60*60*24*15
+            maxAge: 60 * 60 * 60 * 24 * 15
         }
 
         res
@@ -129,7 +129,59 @@ const login = async (req, res) => {
     }
 };
 
+const generateNewToken = async (req, res) => {
+    try {
+        // const token = req.cookies?.refresh_token || req.header("Authorization")?.replace("Bearer", "");
+        const token = req.cookies?.refresh_token;
+
+        console.log(token);
+
+        if (!token) {
+            res.status(401).json({ message: "Token not available." })
+        }
+
+        const user = await Users.findOne({ refresh_token: token }).select("-password -refresh_token");
+
+        // console.log("UserData ", user);
+
+        if (!user) {
+            res.status(404).json({ message: "User not found." })
+        }
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+const logout = async (req, res) => {
+    try {
+        const token = req.cookies?.refresh_token;
+
+        if (!token) {
+            res.status(401).json({ message: "Token not available." })
+        }
+
+        const userExists = await Users.findOneAndUpdate({ refresh_token: token }, { $unset: { refresh_token: token } });
+        console.log("USER EXISTS", userExists);
+
+        res.clearCookie("refresh_token");
+        res.clearCookie("access_token");
+        
+        res.status(200).json({
+            message: "Logout successfully"
+        })
+
+    } catch (error) {
+        console.log(error.message)
+        throw error.message
+    }
+}
+
 module.exports = {
     register,
-    login
+    login,
+    generateNewToken,
+    logout
 }

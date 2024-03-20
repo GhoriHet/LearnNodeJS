@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get(
     "/list-category",
-    auth(),
+    auth(["users", "admin"]),
     categoryController.getCategory
 )
 

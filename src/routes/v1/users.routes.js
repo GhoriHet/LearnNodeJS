@@ -17,4 +17,14 @@ router.post(
     usersController.login
 );
 
+router.post(
+    "/generateNewToken",
+    usersController.generateNewToken
+)
+
+router.get(
+    '/logout',
+    usersController.logout
+)
+
 module.exports = router;

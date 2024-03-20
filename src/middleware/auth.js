@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Users = require('../models/users.model');
 
-const auth = () => async (req, res, next) => {
+const auth = (roles) => async (req, res, next) => {
     try {
         const token = req.cookies?.access_token || req.header("Authorization")?.replace("Bearer", "");
 
@@ -16,6 +16,10 @@ const auth = () => async (req, res, next) => {
 
             if (!user) {
                 res.status(404).json({ message: "User not found." })
+            }
+
+            if (!roles.some((value) => value === user.role)) {
+                return res.status(400).json({message: "You have not permission."})
             }
 
             req.user = user;
