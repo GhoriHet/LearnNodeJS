@@ -131,22 +131,39 @@ const login = async (req, res) => {
 
 const generateNewToken = async (req, res) => {
     try {
-        // const token = req.cookies?.refresh_token || req.header("Authorization")?.replace("Bearer", "");
-        const token = req.cookies?.refresh_token;
+        const Token = req.cookies?.refresh_token || req.body?.refresh_token
 
-        console.log(token);
-
-        if (!token) {
-            res.status(401).json({ message: "Token not available." })
+        if (!Token) {
+            return res.status(401).json({
+                message: "Token required!"
+            })
         }
 
-        const user = await Users.findOne({ refresh_token: token }).select("-password -refresh_token");
-
-        // console.log("UserData ", user);
+        const user = await Users.findOne({ refresh_token: Token }).select("-password -refresh_token")
 
         if (!user) {
-            res.status(404).json({ message: "User not found." })
+            return res.status(404).json({
+                message: "User not found!"
+            })
         }
+
+        const { access_token, refresh_token } = await createAccessRefreshToken(user._id)
+
+        const userData = await Users.findOne(user._id).select("-password -refresh_token")
+
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+
+        res.cookie('access_token', access_token, options)
+        res.cookie('refresh_token', refresh_token, options)
+
+        res.status(200).json({
+            success: true,
+            data: { ...userData, access_token: access_token },
+            message: 'New tokens generated!!'
+        })
 
     } catch (error) {
         return res.status(500).json({
