@@ -149,7 +149,8 @@ const generateNewToken = async (req, res) => {
 
         const { access_token, refresh_token } = await createAccessRefreshToken(user._id)
 
-        const userData = await Users.findOne(user._id).select("-password -refresh_token")
+        const userData = await Users.findOne(user._id).select("-password -refresh_token");
+        console.log("UserData", userData)
 
         const options = {
             httpOnly: true,
@@ -159,11 +160,15 @@ const generateNewToken = async (req, res) => {
         res.cookie('access_token', access_token, options)
         res.cookie('refresh_token', refresh_token, options)
 
+        console.log(access_token)
+
         res.status(200).json({
             success: true,
             data: { ...userData, access_token: access_token },
             message: 'New tokens generated!!'
         })
+
+        console.log({ ...userData, access_token });
 
     } catch (error) {
         return res.status(500).json({
@@ -185,7 +190,7 @@ const logout = async (req, res) => {
 
         res.clearCookie("refresh_token");
         res.clearCookie("access_token");
-        
+
         res.status(200).json({
             message: "Logout successfully"
         })
