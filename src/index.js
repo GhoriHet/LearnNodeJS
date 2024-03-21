@@ -13,7 +13,7 @@ const connectPassport = require('./utils/passport');
 
 const swaggerDocument = YAML.load('./apidocs.yaml');
 
-connectDB();
+connectDB(); 
 
 app.use(cors());
 app.use(cookieParser())
