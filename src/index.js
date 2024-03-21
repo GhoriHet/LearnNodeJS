@@ -2,12 +2,14 @@ const express = require('express');
 const router = require('./routes/v1');
 const cookieParser = require('cookie-parser')
 const connectDB = require('./db');
-var cors = require('cors')
+var cors = require('cors');
+const passport = require('passport')
 const app = express();
 
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const pool = require('./db/mysql.db'); // MySQL databse connected!
+const connectPassport = require('./utils/passport');
 
 const swaggerDocument = YAML.load('./apidocs.yaml');
 
@@ -17,7 +19,14 @@ app.use(cors());
 app.use(cookieParser())
 
 app.use(express.json()); // for parsing application/json  
- 
+
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('express-session')({ secret: 'ererfgdfgrtt4trgdwwsdsdffhgxcsd55df', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+connectPassport()
+
 app.use("/api/v1", router)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
