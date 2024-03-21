@@ -16,7 +16,7 @@ connectDB();
 app.use(cors());
 app.use(cookieParser())
 
-app.use(express.json()); // for parsing application/json  
+app.use(express.json()); // for parsing application/json   
  
 app.use("/api/v1", router)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
