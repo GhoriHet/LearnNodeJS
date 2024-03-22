@@ -8,7 +8,7 @@ const connectPassport = async () => {
             clientSecret: "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",
             callbackURL: "http://localhost:3000/api/v1/users/google/callback"
         }, function (accessToken, refreshToken, profile, cb) {
-            console.log(profile)
+            console.log(profile) 
             // Users.findOrCreate({ googleId: profile.id }, function (err, user) {
             //     return cb(err, user);
             // });
