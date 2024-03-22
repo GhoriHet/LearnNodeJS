@@ -24,17 +24,17 @@ const connectPassport = async () => {
         }
         ));
         passport.serializeUser(function (user, done) {
-            done(null, user.id);
+            done(null, user._id);
         });
 
         passport.deserializeUser(async function (id, done) {
-            const user = await Users.findOne(id);
+            const user = await Users.findOne({ _id: id });
             done(null, user); // Pass the user object to the callback
         });
 
     } catch (error) {
         console.log(error.message)
-    } 
+    }
 }
 
 module.exports = connectPassport

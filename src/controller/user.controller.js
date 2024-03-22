@@ -13,7 +13,7 @@ const createAccessRefreshToken = async (user_id) => {
                 name: user.name
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: process.env.ACCESS_TOKEN_EXPIRE }
+            { expiresIn: '1d' }
         );
 
         const refresh_token = await jwt.sign(
@@ -21,7 +21,7 @@ const createAccessRefreshToken = async (user_id) => {
                 _id: user_id
             },
             process.env.REFRESH_TOKEN_SECRET,
-            { expiresIn: process.env.REFRESH_TOKEN_EXPIRE }
+            { expiresIn: '15d' }
         )
 
         user.refresh_token = refresh_token;
@@ -109,8 +109,7 @@ const login = async (req, res) => {
 
         const options = {
             httpOnly: true,
-            secure: true,
-            maxAge: 60 * 60 * 60 * 24 * 15
+            secure: true
         }
 
         res
@@ -202,5 +201,6 @@ module.exports = {
     register,
     login,
     generateNewToken,
-    logout
+    logout,
+    createAccessRefreshToken
 }
