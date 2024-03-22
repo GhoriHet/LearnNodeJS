@@ -1,6 +1,8 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const passport = require('passport');
 const Users = require('../models/users.model');
+
 
 const connectPassport = async () => {
     try {
@@ -37,4 +39,50 @@ const connectPassport = async () => {
     }
 }
 
-module.exports = connectPassport
+// const connectFacebook = async () => {
+//     try {
+//         await passport.use(new FacebookStrategy({
+//             clientID: '689027684651',
+//             clientSecret: 'IAATeA0W7JIFEhLWFjTqIRkPz93u',
+//             callbackURL: "http://localhost:3000/api/v1/users/facebook/callback"
+//         },
+//             async function (accessToken, refreshToken, profile, cb) {
+//                 console.log(profile)
+//             }
+//         ));
+
+//         // Serialize user for session
+//         passport.serializeUser((user, done) => {
+//             done(null, user);
+//         });
+
+//         // Deserialize user from session
+//         passport.deserializeUser((obj, done) => {
+//             done(null, obj);
+//         });
+
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+const connectFacebook = async () => {
+    try {
+        await passport.use(new FacebookStrategy({
+            clientID: '689027684651',
+            clientSecret: 'IAATeA0W7JIFEhLWFjTqIRkPz93u',
+            callbackURL: "http://localhost:3000/api/v1/users/facebook/callback",
+        },
+            function (accessToken, refreshToken, profile, cb) {
+                console.log(profile);
+            // You can perform further operations here, such as saving the user to your database
+            // Call the callback function with the user object or null if an error occurred
+            return cb(null, profile);
+            }
+        ));
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { connectPassport, connectFacebook }

@@ -1,33 +1,45 @@
 const express = require('express');
 const router = require('./routes/v1');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 const connectDB = require('./db');
-var cors = require('cors');
-const passport = require('passport')
+const cors = require('cors');
+const session = require('express-session')
+const passport = require('passport');
 const app = express();
 
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
-const pool = require('./db/mysql.db'); // MySQL databse connected!
-const connectPassport = require('./utils/passport');
+const { connectPassport, connectFacebook } = require('./utils/passport');
 
 const swaggerDocument = YAML.load('./apidocs.yaml');
 
-connectDB(); 
+connectDB();
 
 app.use(cors());
-app.use(cookieParser())
+app.use(cookieParser());
 
-app.use(express.json()); // for parsing application/json  
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ secret: 'ererfgdfgrtt4trgdwwsdsdffhgxcsd55df', resave: true, saveUninitialized: true }));
+// app.use(require('express-session')({ secret: 'dfgnodfgjdpo4905terkldfndlndlkn', resave: true, saveUninitialized: true }));
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+app.use(session({
+    secret: 'sdvfsdghbsdfmjhkrthr',
+    resave: false,
+    saveUninitialized: false
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-connectPassport()
+// Connect Passport strategies
+connectPassport();
+connectFacebook();
 
-app.use("/api/v1", router)
+// Routes
+app.use("/api/v1", router);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(3000, () => {
