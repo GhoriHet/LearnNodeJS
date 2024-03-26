@@ -1,6 +1,7 @@
 const Users = require("../models/users.model");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { uploadFile } = require("../utils/cloudinary");
 
 const createAccessRefreshToken = async (user_id) => {
     try {
@@ -38,6 +39,7 @@ const createAccessRefreshToken = async (user_id) => {
 
 const register = async (req, res) => {
     try {
+        // console.log("fff", req.file)
         const { email, mobile_no, password } = req.body;
 
         const userExists = await Users.findOne({
@@ -54,8 +56,20 @@ const register = async (req, res) => {
 
         const hashPassword = await bcrypt.hash(password, 10);
 
-        const user = await Users.create({ ...req.body, password: hashPassword });
+        if (!req.file) {
+            return res.status(404).json({
+                message: "User file not found.",
+            })
+        }
 
+        const uploadData = await uploadFile(req.file.path)
+        console.log("UPLOADING...", uploadData);
+
+        const user = await Users.create({
+            ...req.body, password: hashPassword,
+            profile_pic: { public_id: uploadData.user.public_id, url: uploadData.user.url }
+        });
+        
         const userData = await Users.findById(user._id).select("-password -refresh_token")
 
         if (!userData) {

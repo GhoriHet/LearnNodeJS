@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport')
 const { usersController } = require('../../controller');
 const { createAccessRefreshToken } = require('../../controller/user.controller');
+const upload = require('../../utils/upload');
 
 const router = express.Router();
 
@@ -11,6 +12,8 @@ router.get("/", () => {
 
 router.post(
     "/register",
+    upload.single('profile_pic'),
+    // upload.array('photos', 12),
     usersController.register
 );
 

@@ -30,6 +30,12 @@ const usersSchema = new mongoose.Schema({
     googleId: {
         type: String,
     },
+    profile_pic: {
+        type: {
+            public_id: String,
+            url: String
+        }
+    },
     refresh_token: {
         type: String,
         trim: true

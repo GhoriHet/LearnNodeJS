@@ -2,9 +2,7 @@ const jwt = require("jsonwebtoken");
 const Users = require("../models/users.model");
 
 const auth = (roles) => async (req, res, next) => {
-    console.log("first", req.isAuthenticated());
     if (req.isAuthenticated()) {
-        console.log("google", req.session, req.user);
         try {
             const user = await Users.findById(req.user._id);
 
