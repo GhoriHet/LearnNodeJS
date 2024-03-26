@@ -9,7 +9,7 @@ const app = express();
 
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
-const { connectPassport, connectFacebook } = require('./utils/passport');
+const connectPassport = require('./utils/passport');
 
 const swaggerDocument = YAML.load('./apidocs.yaml');
 
@@ -36,7 +36,6 @@ app.use(passport.session());
 
 // Connect Passport strategies
 connectPassport();
-connectFacebook();
 
 // Routes
 app.use("/api/v1", router);
