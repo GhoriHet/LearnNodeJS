@@ -63,12 +63,13 @@ const register = async (req, res) => {
         }
 
         const uploadData = await uploadFile(req.file.path)
-        console.log("UPLOADING...", uploadData);
+        console.log("UPLOADING...", uploadData.url);
 
         const user = await Users.create({
             ...req.body, password: hashPassword,
-            profile_pic: { public_id: uploadData.user.public_id, url: uploadData.user.url }
+            profile_pic: { public_id: uploadData.public_id, url: uploadData.url }
         });
+        
         
         const userData = await Users.findById(user._id).select("-password -refresh_token")
 
