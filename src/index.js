@@ -26,9 +26,15 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(passport.session());
 
 app.use(session({
-    secret: 'sdvfsdghbsdfmjhkrthr',
-    resave: false,
-    saveUninitialized: false
+    secret: process.env.GOOGLE_CLIENT_SECRET,
+    resave: true,
+    saveUninitialized: true
+}));
+
+app.use(session({
+    secret: process.env.FACEBOOK_SECRET,
+    resave: true,
+    saveUninitialized: true
 }));
 
 app.use(passport.initialize());
