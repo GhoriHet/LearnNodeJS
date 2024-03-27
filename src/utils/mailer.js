@@ -30,14 +30,7 @@ const sendMail = async (req, res) => {
                 res.json(info.response)
             }
         })
-
-        // if (!info) {
-        //     return res.status(500).send('Error sending email')
-        // }
-        // console.log("Message sent: %s", info.messageId);
-        // res.json({
-        //     message: 'Email sent' + info.messageId,
-        // })
+        
     } catch (error) {
         console.log(error.message);
     }
