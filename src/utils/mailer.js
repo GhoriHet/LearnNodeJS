@@ -20,6 +20,13 @@ const sendMail = async (req, res) => {
             subject: "Hello ✔", // Subject line
             text: "Hello world?", // plain text body
             html: "<b>Hello world?</b>", // html body
+            attachments: [
+                {
+                    filename: 'sky.jpg',
+                    path: path.join(__dirname, 'sky.jpg'),
+                    contentType: 'image/jpg'
+                }
+            ]
         });
 
         transporter.sendMail(info, function (error, data) {
@@ -30,7 +37,7 @@ const sendMail = async (req, res) => {
                 res.json(info.response)
             }
         })
-        
+
     } catch (error) {
         console.log(error.message);
     }
