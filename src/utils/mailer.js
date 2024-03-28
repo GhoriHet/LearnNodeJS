@@ -29,6 +29,11 @@ const sendMail = async (req, res) => {
                     filename: 'sky.jpg',
                     path: path.join(__dirname, 'sky.jpg'),
                     contentType: 'image/jpg'
+                },
+                {
+                    filename: 'example.pdf',
+                    path: path.join(__dirname, '/pdfs/example.pdf'),
+                    contentType: 'application/pdf'
                 }
             ]
         });
