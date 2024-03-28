@@ -38,7 +38,7 @@ const sendMail = async (req, res) => {
                 console.log(error)
             } else {
                 console.log("Email sent: " + data.response)
-                res.json(info.response)
+                res.json(data.response)
             }
         })
 
