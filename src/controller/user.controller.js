@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { uploadFile } = require("../utils/cloudinary");
 const sendMail = require("../utils/mailer");
+const makePDF = require("../utils/makePDF");
 
 const createAccessRefreshToken = async (user_id) => {
     try {
@@ -69,7 +70,7 @@ const register = async (req, res) => {
             ...req.body, password: hashPassword,
             profile_pic: { public_id: uploadData.public_id, url: uploadData.url }
         });
-        
+
         const userData = await Users.findById(user._id).select("-password -refresh_token")
 
         if (!userData) {
@@ -80,7 +81,8 @@ const register = async (req, res) => {
             })
         }
 
-        sendMail()
+        sendMail(email);
+        makePDF(req.body);
         return res.status(200).json({
             success: true,
             message: "User registration successfully.",
