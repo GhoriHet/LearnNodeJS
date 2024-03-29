@@ -13,7 +13,6 @@ const fs = require('fs');
 const path = require('path');
 
 const makePDF = (data) => {
-    console.log("PDF CALL: ", data);
     const docDefinition = {
         pageSize: 'A4',
         content: [
