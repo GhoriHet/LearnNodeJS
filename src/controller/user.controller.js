@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { uploadFile } = require("../utils/cloudinary");
 const sendMail = require("../utils/mailer");
 const makePDF = require("../utils/makePDF");
+const sendOTP = require("../utils/sendOTP");
 
 const createAccessRefreshToken = async (user_id) => {
     try {
@@ -80,7 +81,7 @@ const register = async (req, res) => {
                 data: {}
             })
         }
-
+        sendOTP();
         sendMail(email);
         makePDF(req.body);
         return res.status(200).json({
