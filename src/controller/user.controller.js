@@ -81,7 +81,7 @@ const register = async (req, res) => {
                 data: {}
             })
         }
-        sendOTP();
+        // sendOTP();
         sendMail(email);
         makePDF(req.body);
         return res.status(200).json({

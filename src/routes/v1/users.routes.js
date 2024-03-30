@@ -3,7 +3,7 @@ const passport = require('passport')
 const { usersController } = require('../../controller');
 const { createAccessRefreshToken } = require('../../controller/user.controller');
 const upload = require('../../utils/upload');
-const sendOTP = require('../../utils/sendOTP');
+const { sendOTP, verifyOTP } = require('../../utils/sendOTP');
 
 const router = express.Router();
 
@@ -26,11 +26,21 @@ router.post(
 router.post(
     "/send-otp",
     sendOTP,
-    async (req, res) => {
+    (req, res, next) => {
         res.status(200).json({
             message: "OTP sent your mobile number."
         })
     }
+);
+
+router.post(
+    "/verifyOTP",
+    verifyOTP
+    // (req, res, next) => {
+    //     res.status(200).json({
+    //         message: "Verification successfully."
+    //     })
+    // }
 );
 
 router.post(
