@@ -10,10 +10,12 @@ const app = express();
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const connectPassport = require('./utils/passport');
+const connectSocket = require('./utils/socket.io');
 
 const swaggerDocument = YAML.load('./apidocs.yaml');
 
 connectDB();
+connectSocket()
 
 app.use(cors());
 app.use(cookieParser());

@@ -32,6 +32,7 @@
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "pdfmake": "^0.2.10",
+    "socket.io": "^4.7.5",
     "swagger-ui-express": "^5.0.0",
     "twilio": "^5.0.1",
     "yamljs": "^0.3.0"
